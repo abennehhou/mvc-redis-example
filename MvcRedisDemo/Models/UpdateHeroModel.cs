@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace MvcRedisDemo.Models
+﻿namespace MvcRedisDemo.Models
 {
-    public class Hero
+    public class UpdateHeroModel
     {
         public string Id { get; set; }
 
@@ -11,10 +9,6 @@ namespace MvcRedisDemo.Models
         public string Description { get; set; }
 
         public int Score { get; set; }
-
-        public DateTime CreationDate { get; set; }
-
-        public DateTime? ModificationDate { get; set; }
 
         public string Status { get; set; }
     }

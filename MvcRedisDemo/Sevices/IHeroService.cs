@@ -11,5 +11,9 @@ namespace MvcRedisDemo.Sevices
         Task<Hero> GetHeroAsync(string id);
 
         Task<Hero> CreateHeroAsync(CreateHeroModel createHeroModel);
+
+        Task<Hero> UpdateHeroAsync(string id, UpdateHeroModel updateHeroModel);
+
+        Task<bool> DeleteHeroAsync(string id);
     }
 }

@@ -6,6 +6,7 @@
 }
 
 <h2>Hero details</h2>
+<hr />
 
 <dl class="dl-horizontal">
     <dt>@Html.DisplayNameFor(model => model.Id)</dt>
@@ -23,10 +24,15 @@
     <dt>@Html.DisplayNameFor(model => model.CreationDate)</dt>
     <dd>@Model.CreationDate</dd>
 
+    <dt>@Html.DisplayNameFor(model => model.ModificationDate)</dt>
+    <dd>@Model.ModificationDate</dd>
+
     <dt>@Html.DisplayNameFor(model => model.Status)</dt>
     <dd>@Model.Status</dd>
 </dl>
 
 <p>
-    @Html.ActionLink("Back to List", "Index", "Home", null, null)
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Delete", "Delete", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index", "Home")
 </p>

@@ -1,10 +1,10 @@
-﻿@model MvcRedisDemo.Models.CreateHeroModel
+﻿@model MvcRedisDemo.Models.UpdateHeroModel
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Edit";
 }
 
-<h2>Create Hero</h2>
+<h2>Edit Hero</h2>
 <hr />
 
 @using (Html.BeginForm())
@@ -12,9 +12,9 @@
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        <h4>Create Hero</h4>
-        <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+
         <div class="form-group">
             @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -40,13 +40,21 @@
         </div>
 
         <div class="form-group">
+            @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Status, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Save" class="btn btn-default" />
             </div>
         </div>
     </div>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index", "Home", null, null)
+    @Html.ActionLink("Cancel", "Details", "Heroes", new { id = Model.Id }, null)
 </div>

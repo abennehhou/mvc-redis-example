@@ -34,6 +34,9 @@ namespace MvcRedisDemo.Sevices
 
         public async Task<Hero> GetHeroAsync(string id)
         {
+            if (id == null)
+                throw new ArgumentNullException(nameof(id));
+
             var serializedHero = await _databaseContext.GetRedisDatabase().StringGetAsync(string.Format(HeroKeyPattern, id));
 
             return serializedHero.IsNullOrEmpty ? null : JsonConvert.DeserializeObject<Hero>(serializedHero);
@@ -41,6 +44,9 @@ namespace MvcRedisDemo.Sevices
 
         public async Task<Hero> CreateHeroAsync(CreateHeroModel createHeroModel)
         {
+            if (createHeroModel == null)
+                throw new ArgumentNullException(nameof(createHeroModel));
+
             var hero = new Hero
             {
                 Id           = Guid.NewGuid().ToString(),
@@ -56,7 +62,45 @@ namespace MvcRedisDemo.Sevices
             await _databaseContext.GetRedisDatabase().StringSetAsync(string.Format(HeroKeyPattern, hero.Id), serializedHero);
             await _databaseContext.GetRedisDatabase().SetAddAsync(HeroIdsSetKey, hero.Id);
 
-            return await Task.FromResult(hero);
+            return hero;
+        }
+
+        public async Task<Hero> UpdateHeroAsync(string id, UpdateHeroModel updateHeroModel)
+        {
+            if (id == null)
+                throw new ArgumentNullException(nameof(id));
+
+            if (updateHeroModel == null)
+                throw new ArgumentNullException(nameof(updateHeroModel));
+
+            var hero = await GetHeroAsync(id);
+
+            if (hero == null)
+                return null;
+
+            hero.Name             = updateHeroModel.Name;
+            hero.Description      = updateHeroModel.Description;
+            hero.Score            = updateHeroModel.Score;
+            hero.ModificationDate = DateTime.UtcNow;
+            hero.Status           = updateHeroModel.Status;
+
+            var serializedHero = JsonConvert.SerializeObject(hero);
+
+            await _databaseContext.GetRedisDatabase().StringSetAsync(string.Format(HeroKeyPattern, hero.Id), serializedHero);
+
+            return hero;
+        }
+
+        public async Task<bool> DeleteHeroAsync(string id)
+        {
+            if (id == null)
+                throw new ArgumentNullException(nameof(id));
+
+            var isKeyRemoved = await _databaseContext.GetRedisDatabase().KeyDeleteAsync(string.Format(HeroKeyPattern, id));
+
+            var isKeyRemovedFromSet = await _databaseContext.GetRedisDatabase().SetRemoveAsync(HeroIdsSetKey, id);
+
+            return isKeyRemoved && isKeyRemovedFromSet;
         }
     }
 }
