@@ -1,0 +1,40 @@
+﻿@model IEnumerable<MvcRedisDemo.Models.Hero>
+
+@{
+    ViewBag.Title = "Heroes Dashboard";
+}
+
+
+<h2>Heroes</h2>
+
+@Html.ActionLink("Create New Hero", "Create", "Heroes", null, null)
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Id)</th>
+            <th>@Html.DisplayNameFor(model => model.Name)</th>
+            <th>@Html.DisplayNameFor(model => model.Description)</th>
+            <th>@Html.DisplayNameFor(model => model.CreationDate)</th>
+            <th>@Html.DisplayNameFor(model => model.Status)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var hero in Model)
+        {
+            <tr>
+                <th>@hero.Id</th>
+                <td>@hero.Name</td>
+                <td>@hero.Description</td>
+                <td>@hero.CreationDate</td>
+                <td>@hero.Status</td>
+                <td>
+                    <a href="@Url.Action("Details", "Heroes", new { id = @hero.Id })">
+                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
